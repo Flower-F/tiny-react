@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import tsPlugin from 'rollup-plugin-typescript2';
 import cjsPlugin from '@rollup/plugin-commonjs';
+import replacePlugin from '@rollup/plugin-replace';
 
 // basic path of packages
 const packageRoot = path.resolve(__dirname, '../../packages');
@@ -36,6 +37,6 @@ export function getPackageJson(packageName) {
  * rollup configs
  * @param {object} typescript
  */
-export function getBasicRollupPlugins({ typescript = {} } = {}) {
-  return [cjsPlugin(), tsPlugin(typescript)];
+export function getBasicRollupPlugins(alias = { __DEV__: true }, typescript = {}) {
+  return [replacePlugin(alias), cjsPlugin(), tsPlugin(typescript)];
 }

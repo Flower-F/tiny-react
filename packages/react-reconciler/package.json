@@ -1,0 +1,10 @@
+{
+  "name": "react-reconcile",
+  "version": "0.0.0",
+  "module": "index.ts",
+  "license": "MIT",
+  "description": "React package for creating custom renderers.",
+  "dependencies": {
+    "shared": "workspace:*"
+  }
+}

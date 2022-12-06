@@ -1,5 +1,5 @@
 import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols';
-import { Type, Key, Ref, Props, ElementType, ReactElement } from 'shared/ReactType';
+import { Type, Key, Ref, Props, ElementType, ReactElement } from 'shared/ReactTypes';
 
 /** The constructor of  ReactElement */
 function ReactElement(type: Type, key: Key, ref: Ref, props: Props): ReactElement {
