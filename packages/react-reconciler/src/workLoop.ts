@@ -1,6 +1,8 @@
 import { beginWork } from './beginWork';
+import { commitMutationEffects } from './commitWork';
 import { completeWork } from './completeWork';
 import { createWorkInProgress, FiberNode } from './fiber';
+import { MutationMask, NoFlags } from './fiberFlags';
 import { FiberRootNode } from './fiberRoot';
 import { HostRoot } from './workTags';
 
@@ -13,6 +15,11 @@ function prepareFreshStack(root: FiberRootNode) {
 export function scheduleUpdateOnFiber(fiber: FiberNode) {
   // schedule
   const root = markUpdateFromFiberToRoot(fiber);
+
+  if (root === null) {
+    return;
+  }
+
   renderRoot(root);
 }
 
@@ -44,15 +51,49 @@ function renderRoot(root: FiberRootNode) {
       if (__DEV__) {
         console.warn('Some errors happen in workLoop:', error);
       }
-      workInProgress = null;
+      // workInProgress = null;
     }
-    // eslint-disable-next-line no-constant-condition
   } while (true);
+
+  if (workInProgress !== null) {
+    // This is a sync render, so we should have finished the whole tree.
+    throw new Error(
+      'Cannot commit an incomplete root. This error is likely caused by a bug in React. Please file an issue.',
+    );
+  }
 
   const finishedWork = root.current.alternate;
   root.finishedWork = finishedWork;
 
-  // commitRoot(root);
+  commitRoot(root);
+}
+
+function commitRoot(root: FiberRootNode) {
+  const finishedWork = root.finishedWork;
+  if (finishedWork === null) {
+    return;
+  }
+
+  if (__DEV__) {
+    console.warn('begin to commit: ', finishedWork);
+  }
+
+  root.finishedWork = null;
+
+  const subtreeHasEffect = (finishedWork.subtreeFlags & MutationMask) !== NoFlags;
+  const rootHasEffect = (finishedWork.flags & MutationMask) !== NoFlags;
+
+  if (subtreeHasEffect || rootHasEffect) {
+    // beforeMutation
+
+    // Mutation
+    commitMutationEffects(root, finishedWork);
+    root.current = finishedWork;
+
+    // Layout
+  } else {
+    root.current = finishedWork;
+  }
 }
 
 function workLoop() {
@@ -78,7 +119,12 @@ function completeUnitOfWork(unitOfWork: FiberNode) {
   let completedWork: FiberNode | null = unitOfWork;
 
   do {
-    completeWork(completedWork);
+    const next = completeWork(completedWork);
+    if (next !== null) {
+      workInProgress = next;
+      return;
+    }
+
     const siblingFiber = completedWork.sibling;
     if (siblingFiber !== null) {
       // If there is more work to do in this returnFiber, do that next.

@@ -15,3 +15,14 @@ export interface ReactElement {
 }
 
 export type Action<State> = State | ((prevState: State) => State);
+
+type ReactFragment = Iterable<ReactNode>;
+export type ReactNode = ReactElement | string | number | ReactFragment | ReactPortal | boolean | null | undefined;
+
+export type ReactEmpty = null | void | boolean;
+export type ReactText = string | number;
+
+interface ReactPortal extends ReactElement {
+  key: Key | null;
+  children: ReactNode;
+}

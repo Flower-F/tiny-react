@@ -1,0 +1,14 @@
+{
+  "name": "react-dom",
+  "version": "0.0.0",
+  "module": "index.ts",
+  "license": "MIT",
+  "description": "React implementation details for react-dom.",
+  "dependencies": {
+    "shared": "workspace:*",
+    "react-reconciler": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "workspace:*"
+  }
+}

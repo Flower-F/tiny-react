@@ -103,5 +103,7 @@ function createFiberFromTypeAndProps(type: Type, key: Key, pendingProps: unknown
   }
 
   const fiber = new FiberNode(fiberTag, pendingProps, key);
+  fiber.type = type;
+
   return fiber;
 }

@@ -37,6 +37,6 @@ export function getPackageJson(packageName) {
  * rollup configs
  * @param {object} typescript
  */
-export function getBasicRollupPlugins(alias = { __DEV__: true }, typescript = {}) {
+export function getBasicRollupPlugins(alias = { __DEV__: true, preventAssignment: true }, typescript = {}) {
   return [replacePlugin(alias), cjsPlugin(), tsPlugin(typescript)];
 }

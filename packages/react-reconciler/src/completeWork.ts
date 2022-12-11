@@ -1,16 +1,16 @@
 import { appendInitialChild, createInstance, createTextInstance, Instance } from 'hostConfig';
 import { FiberNode } from './fiber';
 import { NoFlags } from './fiberFlags';
-import { FunctionComponent, HostComponent, HostRoot, HostText, IndeterminateComponent } from './workTags';
+import { HostComponent, HostRoot, HostText } from './workTags';
 
 export function completeWork(workInProgress: FiberNode) {
   const newProps = workInProgress.pendingProps;
   const current = workInProgress.alternate;
 
   switch (workInProgress.tag) {
-    case IndeterminateComponent:
-    case FunctionComponent:
-      return null;
+    // case IndeterminateComponent:
+    // case FunctionComponent:
+    //   return null;
     case HostComponent:
       if (current !== null) {
         // update

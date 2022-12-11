@@ -3,6 +3,7 @@ export type WorkTag =
   | typeof IndeterminateComponent
   | typeof HostRoot
   | typeof HostComponent
+  | typeof ClassComponent
   | typeof HostText;
 
 export const FunctionComponent = 0;

@@ -4,7 +4,7 @@ import { createFiberFromElement, createFiberFromText, FiberNode } from './fiber'
 import { Placement } from './fiberFlags';
 
 function createChildReconciler(shouldTrackSideEffects: boolean) {
-  function reconcileSingleElement(returnFiber: FiberNode, currentFirstChild: FiberNode | null, element: ReactElement) {
+  function reconcileSingleElement(returnFiber: FiberNode, _currentFirstChild: FiberNode | null, element: ReactElement) {
     const fiber = createFiberFromElement(element);
     fiber.return = returnFiber;
     return fiber;
@@ -12,7 +12,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 
   function reconcileSingleTextNode(
     returnFiber: FiberNode,
-    currentFirstChild: FiberNode | null,
+    _currentFirstChild: FiberNode | null,
     textContent: string | number,
   ) {
     const fiber = createFiberFromText(textContent);

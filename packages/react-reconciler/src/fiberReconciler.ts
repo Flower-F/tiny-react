@@ -1,5 +1,5 @@
 import { Container } from 'hostConfig';
-import { ReactElement } from 'shared/ReactTypes';
+import { ReactNode } from 'shared/ReactTypes';
 import { FiberNode } from './fiber';
 import { FiberRootNode } from './fiberRoot';
 import { createUpdate, createUpdateQueue, enqueueUpdate, UpdateQueue } from './updateQueue';
@@ -13,11 +13,11 @@ export function createContainer(container: Container) {
   return root;
 }
 
-export function updateContainer(element: ReactElement | null, root: FiberRootNode) {
+export function updateContainer(element: ReactNode, root: FiberRootNode) {
   const hostRootFiber = root.current;
-  const update = createUpdate<ReactElement | null>(element);
+  const update = createUpdate<ReactNode>(element);
 
-  enqueueUpdate(hostRootFiber.updateQueue as UpdateQueue<ReactElement | null>, update);
+  enqueueUpdate(hostRootFiber.updateQueue as UpdateQueue<ReactNode>, update);
 
   scheduleUpdateOnFiber(hostRootFiber);
 
