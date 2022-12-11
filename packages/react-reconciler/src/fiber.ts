@@ -1,7 +1,7 @@
 import { Key, Props, ReactElement, Ref, Type } from 'shared/ReactTypes';
 import { Flags, NoFlags } from './fiberFlags';
 import { UpdateQueue } from './updateQueue';
-import { HostComponent, HostText, IndeterminateComponent, WorkTag } from './workTags';
+import { FunctionComponent, HostComponent, HostText, WorkTag } from './workTags';
 
 export class FiberNode {
   type: any;
@@ -89,7 +89,7 @@ export function createFiberFromText(content: string | number) {
 }
 
 function createFiberFromTypeAndProps(type: Type, key: Key, pendingProps: unknown) {
-  let fiberTag: WorkTag = IndeterminateComponent;
+  let fiberTag: WorkTag = FunctionComponent;
 
   if (typeof type === 'string') {
     // <div /> => { type: 'div' }

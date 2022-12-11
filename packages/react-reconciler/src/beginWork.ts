@@ -1,8 +1,9 @@
-import { ReactElement } from 'shared/ReactTypes';
+import { Props, ReactElement, Type } from 'shared/ReactTypes';
 import { mountChildFibers, reconcileChildFibers } from './childFiber';
 import { FiberNode } from './fiber';
+import { renderWithHooks } from './fiberHooks';
 import { processUpdateQueue, UpdateQueue } from './updateQueue';
-import { HostComponent, HostRoot, HostText } from './workTags';
+import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTags';
 
 // Compare React Element with FiberNode, and return the child fiber
 export function beginWork(workInProgress: FiberNode) {
@@ -14,6 +15,11 @@ export function beginWork(workInProgress: FiberNode) {
     case HostText:
       // no children
       return null;
+    case FunctionComponent: {
+      const Component = workInProgress.type;
+      const props = workInProgress.pendingProps;
+      return updateFunctionComponent(workInProgress, Component, props);
+    }
     default:
       if (__DEV__) {
         console.warn('The type of beginWork is not implemented');
@@ -38,9 +44,16 @@ function updateHostRoot(workInProgress: FiberNode) {
 
 function updateHostComponent(workInProgress: FiberNode) {
   const nextProps = workInProgress.pendingProps;
-
   const nextChildren = nextProps.children;
+
   reconcileChildren(workInProgress, nextChildren);
+  return workInProgress.child;
+}
+
+function updateFunctionComponent(workInProgress: FiberNode, Component: Type, nextProps: Props) {
+  const nextChildren = renderWithHooks(workInProgress, Component, nextProps);
+  reconcileChildren(workInProgress, nextChildren);
+
   return workInProgress.child;
 }
 
