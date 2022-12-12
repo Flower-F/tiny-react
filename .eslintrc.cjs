@@ -10,9 +10,10 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'react-refresh'],
   rules: {
     '@typescript-eslint/no-var-requires': 'off',
     'no-constant-condition': 'off',
+    'react-refresh/only-export-components': 'warn',
   },
 };
